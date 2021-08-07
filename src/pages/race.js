@@ -133,7 +133,9 @@ import { Table } from 'antd';
     }
     // 筛选发生变化时清空已经选择的内容
     const onChange = (pagination, filters, sorter, extra) => {
-      props.onSelect([])
+      if (props && props.hasOwnProperty('onSelect')){
+        props.onSelect([])     
+      }      
       setSelectedRowKeys([])
     }
     return(

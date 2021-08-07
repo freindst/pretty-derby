@@ -9,8 +9,9 @@ const ua = dbL.get('ua').value();
 
 const EventList = (props)=>{
   const eventIdList = props.eventList
+  var notEmpty = eventIdList&&eventIdList.length>0;
   const eventList = eventIdList.map(id=>db.get('events').find({id:id}).value())
-  const qieZhe = eventList?.filter(event=>JSON.stringify(event).indexOf('切れ者')!==-1)
+  const qieZhe = eventList?.filter(event=>notEmpty&&JSON.stringify(event).indexOf('切れ者')!==-1)
   if(props.type==='multi'){
     return(<>
         {eventList.filter(event=>event.choiceList.length > 1).map(event=><EventBox key={event.id} event={event}></EventBox>)}
@@ -31,10 +32,10 @@ const EventList = (props)=>{
       )}
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab={t('有选项')} key="1">
-          {eventList.filter(event=>event.choiceList.length > 1).map(event=><EventBox key={event.id} event={event} ></EventBox>)}
+          {eventList.filter(event=>notEmpty&&event.choiceList.length > 1).map(event=><EventBox key={event.id} event={event} ></EventBox>)}
         </Tabs.TabPane>
         <Tabs.TabPane tab={t('无选项')} key="2">
-          {eventList.filter(event=>event.choiceList.length <= 1).map(event=><EventBox key={event.id} event={event}></EventBox>)}
+          {eventList.filter(event=>notEmpty&&event.choiceList.length <= 1).map(event=><EventBox key={event.id} event={event}></EventBox>)}
         </Tabs.TabPane>
       </Tabs>
     </>
